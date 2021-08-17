@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import projeto.spring.data.dao.InterfaceSpringDataUser;
 import projeto.spring.data.model.UsuarioSpringData;
 
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,7 +27,7 @@ public class AppSpringDataTest {
         usuarioSpringData.setIdade(21);
         usuarioSpringData.setLogin("teste 123");
         usuarioSpringData.setSenha("123");
-        usuarioSpringData.setNome("teste");
+        usuarioSpringData.setNome("Delete por Nome");
 
         interfaceSpringDataUser.save(usuarioSpringData);
 
@@ -46,10 +47,10 @@ public class AppSpringDataTest {
     }
 
     @Test
-    public void testeConsultaTodos(){
+    public void testeConsultaTodos() {
         Iterable<UsuarioSpringData> lista = interfaceSpringDataUser.findAll();
 
-        for (UsuarioSpringData usuarioSpringData : lista){
+        for (UsuarioSpringData usuarioSpringData : lista) {
             System.out.println(usuarioSpringData.getId());
             System.out.println(usuarioSpringData.getNome());
             System.out.println(usuarioSpringData.getEmail());
@@ -61,12 +62,52 @@ public class AppSpringDataTest {
     }
 
     @Test
-    public void testeUpdade(){
+    public void testeUpdade() {
         Optional<UsuarioSpringData> usuarioSpringData = interfaceSpringDataUser.findById(1L);
 
         UsuarioSpringData data = usuarioSpringData.get();
-        data.setNome("Marcus Viniicus Update Spring dATA");
+        data.setNome("Marcus Vinicius Update Spring dATA");
         interfaceSpringDataUser.save(data);
     }
 
+    @Test
+    public void testeDelete() {
+        interfaceSpringDataUser.deleteById(5L);
+    }
+
+    @Test
+    public void testeConsultaNome() {
+        List<UsuarioSpringData> list = interfaceSpringDataUser.buscaPorNome("Vinicius");
+
+        for (UsuarioSpringData usuarioSpringData : list) {
+            System.out.println(usuarioSpringData.getId());
+            System.out.println(usuarioSpringData.getNome());
+            System.out.println(usuarioSpringData.getEmail());
+            System.out.println(usuarioSpringData.getIdade());
+            System.out.println(usuarioSpringData.getLogin());
+            System.out.println(usuarioSpringData.getSenha());
+            System.out.println("---------------------------------------------------------");
+        }
+    }
+
+    @Test
+    public void testeConsultaNomeParam() {
+        UsuarioSpringData usuarioSpringData = interfaceSpringDataUser.buscaPorNomeParam("Vinicius");
+
+        System.out.println(usuarioSpringData.getId());
+        System.out.println(usuarioSpringData.getNome());
+        System.out.println(usuarioSpringData.getEmail());
+        System.out.println(usuarioSpringData.getIdade());
+        System.out.println(usuarioSpringData.getLogin());
+        System.out.println(usuarioSpringData.getSenha());
+        System.out.println("---------------------------------------------------------");
+    }
+
+    @Test
+    public void testeDeletePorNome(){
+        interfaceSpringDataUser.deletePorNome("Delete por Nome");
+
+    }
+
 }
+
