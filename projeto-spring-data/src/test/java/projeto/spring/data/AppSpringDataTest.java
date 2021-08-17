@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import projeto.spring.data.dao.InterfaceSpringDataUser;
+import projeto.spring.data.dao.InterfaceTelefone;
+import projeto.spring.data.model.Telefone;
 import projeto.spring.data.model.UsuarioSpringData;
 
 import java.util.List;
@@ -18,6 +20,8 @@ public class AppSpringDataTest {
     @Autowired
     private InterfaceSpringDataUser interfaceSpringDataUser;
 
+    @Autowired
+    private InterfaceTelefone interfaceTelefone;
 
     @Test
     public void testeInsert() {
@@ -27,7 +31,7 @@ public class AppSpringDataTest {
         usuarioSpringData.setIdade(21);
         usuarioSpringData.setLogin("teste 123");
         usuarioSpringData.setSenha("123");
-        usuarioSpringData.setNome("Delete por Nome");
+        usuarioSpringData.setNome("Testanto1");
 
         interfaceSpringDataUser.save(usuarioSpringData);
 
@@ -38,12 +42,21 @@ public class AppSpringDataTest {
     @Test
     public void testeConsulta() {
         Optional<UsuarioSpringData> usuarioSpringData = interfaceSpringDataUser.findById(1L);
+        System.out.println(usuarioSpringData.get().getId());
         System.out.println(usuarioSpringData.get().getNome());
         System.out.println(usuarioSpringData.get().getEmail());
         System.out.println(usuarioSpringData.get().getIdade());
         System.out.println(usuarioSpringData.get().getLogin());
         System.out.println(usuarioSpringData.get().getSenha());
-        System.out.println(usuarioSpringData.get().getId());
+
+
+        for(Telefone telefone : usuarioSpringData.get().getTelefones()){
+            System.out.println(telefone.getNumero());
+            System.out.println(telefone.getTipo());
+            System.out.println(telefone.getId());
+            System.out.println(telefone.getUsuarioSpringData().getNome());
+        }
+
     }
 
     @Test
@@ -106,8 +119,26 @@ public class AppSpringDataTest {
     @Test
     public void testeDeletePorNome(){
         interfaceSpringDataUser.deletePorNome("Delete por Nome");
-
     }
+
+    @Test
+    public void testeUpdateEmailPorNome(){
+        interfaceSpringDataUser.updateEmailPorNome("testeUpdate@gmail.com", "Vinicius" );
+    }
+
+    @Test
+    public void testeInsertTelefone(){
+
+        Optional<UsuarioSpringData> usuarioSpringData = interfaceSpringDataUser.findById(1L);
+
+        Telefone telefone = new Telefone();
+        telefone.setTipo("celular");
+        telefone.setNumero("5453455454545");
+        telefone.setUsuarioSpringData(usuarioSpringData.get());
+
+        interfaceTelefone.save(telefone);
+    }
+
 
 }
 

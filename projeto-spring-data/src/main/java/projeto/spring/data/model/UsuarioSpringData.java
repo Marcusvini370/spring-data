@@ -3,10 +3,8 @@ package projeto.spring.data.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,5 +22,7 @@ public class UsuarioSpringData {
     private String email;
     private int idade;
 
+    @OneToMany(mappedBy = "usuarioSpringData", orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Telefone> telefones;
 
 }
